@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>D Sara Spa</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@200..1000&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  
+  <style>
+    :root {
+        --background-color: #F6A6C1;
+        --text-title-color: #E04C8E;
+        --text-color: #5A4B5F;
+        --icon-color: #5A4B5F;
+        --icon-menu-color: #E04C8E;
+        --menu-color: #E04C8E;
+
+        --text-selected-color: #FF78A1;
+        --background-selected: #F8B6D5;
+        --background-hover: #F7A2C6;
+
+        --border-color: #F19ABC;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Nunito Sans", sans-serif;
+    }
+
+    body {
+      width: 100%;
+      height: 100vh;
+      background-color: #ffffff;
+    }
+
+    header {
+      z-index: 200;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 0.45rem 2rem 0.45rem 1.27rem;
+      border-bottom: 1px solid var(--border-color);
+      position: fixed;
+      background-color: var(--background-color);
+      top: 0;
+      left: 0;
+    }
+
+    .left {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.4rem;
+    }
+
+    .menu-container {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .menu {
+      width: 1.5rem;
+      height: 37%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .menu div {
+      width: 100%;
+      height: 0.15rem;
+      background-color: var(--menu-color);
+      transition: all 0.2s ease;
+    }
+
+    .menu.menu-toggle div:first-child {
+      width: 40%;
+      transform: rotate(-35deg) translate(-30%, 175%);
+    }
+
+    .menu.menu-toggle div:last-child {
+      width: 40%;
+      transform: rotate(35deg) translate(-30%, -160%);
+    }
+
+    .brand {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .brand .logo {
+      width: 1.7rem;
+    }
+
+    .brand .name {
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--text-title-color);
+    }
+
+    .right {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1.6rem;
+    }
+
+    .right a {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 0.5rem;
+      transition: background-color 0.2s ease;
+    }
+
+    .right a:hover {
+      background-color: var(--background-hover);
+    }
+
+    .right img {
+      width: 1.5rem;
+      margin: 0.5rem;
+    }
+
+    .right .user {
+      width: 2.1rem;
+      border-radius: 50%;
+    }
+
+    .sidebar {
+      margin-top: 4rem;
+      width: 4rem;
+      height: calc(100vh - 4rem);
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 100;
+      padding: 1.1rem 0;
+      border-right: 1px solid var(--border-color);
+      overflow-y: auto;
+      background-color: var(--background-color);
+      transition: width 0.5s ease;
+    }
+
+    .sidebar.menu-toggle {
+      width: 10.75rem;
+    }
+
+    .sidebar a {
+      display: flex;
+      align-items: center;
+      gap: 1.3rem;
+      padding: 0.9rem 0.7rem;
+      text-decoration: none;
+      margin: 0 0.5rem;
+      border-radius: 0.5rem;
+      white-space: nowrap;
+      overflow: hidden;
+      color: var(--text-color);
+    }
+
+    .sidebar a:hover {
+      background-color: var(--background-hover);
+    }
+
+    .sidebar a.selected {
+      color: var(--text-selected-color);
+      background-color: var(--background-selected);
+    }
+
+    .sidebar a.search {
+      padding: 1rem 0.7rem;
+      border-bottom: 1px solid var(--border-color);
+      margin-bottom: 0.2rem;
+    }
+
+    .sidebar img {
+      width: 1.6rem;
+    }
+
+    main {
+      margin-top: 4rem;
+      margin-left: 4rem;
+      padding: 2rem;
+      transition: margin-left 0.5s ease;
+      min-height: calc(100vh - 8rem);
+    }
+
+    main.menu-toggle {
+      margin-left: 4rem;
+    }
+
+    @media (max-width: 500px) {
+      .right .icons-header {
+        display: none;
+      }
+
+      .sidebar {
+        width: 0;
+      }
+
+      main {
+        margin-left: 0;
+      }
+
+      main.menu-toggle {
+        margin-left: 0;
+      }
+
+      .menu.menu-toggle div:first-child {
+        width: 100%;
+        transform: rotate(-45deg) translate(-0.2rem, 0.3rem);
+      }
+
+      .menu.menu-toggle div:nth-child(2) {
+        opacity: 0;
+      }
+
+      .menu.menu-toggle div:last-child {
+        width: 100%;
+        transform: rotate(45deg) translate(-0.2rem, -0.3rem);
+      }
+    }
+
+    /* Estilos para el catálogo de terapeutas */
+    .catalogo {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 1.5rem;
+        padding: 2rem;
+        justify-items: center;
+    }
+
+    .catalogo h2 {
+      grid-column: 1 / -1;
+      text-align: center;
+      color: var(--text-title-color);
+      margin-bottom: 2rem;
+      font-size: 2rem;
+    }
+
+    .card {
+        background-color: #fff;
+        border-radius: 0.5rem;
+        overflow: hidden;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 250px;
+        text-align: center;
+        transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+        transform: scale(1.03);
+    }
+
+    .card-img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .card-info {
+        padding: 1rem;
+    }
+
+    .card-info h3 {
+        font-size: 1.2rem;
+        color: var(--text-title-color);
+        margin-bottom: 0.5rem;
+    }
+
+    .card-info p {
+        font-size: 0.9rem;
+        color: var(--text-color);
+        margin-bottom: 1rem;
+    }
+
+    .info-btn {
+        background-color: var(--menu-color);
+        color: white;
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 0.5rem;
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: background-color 0.2s ease;
+    }
+
+    .info-btn:hover {
+      background-color: var(--background-hover);
+    }
+
+    /* Estilos para la galería con carrusel */
+    .galeria {
+        padding: 2rem;
+        margin-top: 2rem;
+    }
+
+    .galeria h2 {
+        text-align: center;
+        color: var(--text-title-color);
+        margin-bottom: 2rem;
+        font-size: 2rem;
+    }
+
+    .carousel-container {
+      position: relative;
+      max-width: 1000px;
+      margin: 0 auto;
+      overflow: hidden;
+      padding: 1rem;
+    }
+
+    .carousel {
+        display: flex;
+        transition: transform 0.5s ease;
+        gap: 1.3rem;
+        will-change: transform;
+    }
+
+    .galeria-card {
+        flex: 0 0 auto;
+        width: 250px;
+        border-radius: 0.5rem;
+        overflow: hidden;
+        cursor: pointer;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        background-color: white;
+    }
+
+    .galeria-img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+    }
+
+    /* Botones de navegación */
+    .carousel-controls {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .prevBtn, .nextBtn {
+      background-color: var(--background-selected);
+      border: none;
+      border-radius: 50%;
+      width: 2.5rem;
+      height: 2.5rem;
+      cursor: pointer;
+      color: var(--text-selected-color);
+      font-size: 1.5rem;
+      transition: background-color 0.3s ease;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .prevBtn:hover, .nextBtn:hover {
+      background-color: var(--menu-color);
+      color: white;
+    }
+
+    .qr-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 1rem;
+    }
+
+    .qr-container img {
+      max-width: 200px;
+      width: 100%;
+      height: auto;
+      border: 1px solid var(--border-color);
+      border-radius: 0.5rem;
+    }
+
+    /* Estilos para la cuadrícula de QR */
+    .qr-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 2rem;
+    padding: 1rem;
+    max-width: 1000px;
+    margin: 0 auto;
+    }
+
+    .qr-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    }
+
+    .qr-item h3 {
+    color: var(--text-title-color);
+    font-size: 1.1rem;
+    text-align: center;
+    }
+
+    /* Ajustes para móviles */
+    @media (max-width: 600px) {
+    .qr-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+    }
+
+    @media (max-width: 400px) {
+    .qr-grid {
+        grid-template-columns: 1fr;
+    }
+    }
+
+    .footer {
+      background-color: var(--background-color);
+      color: var(--text-color);
+      text-align: center;
+      padding: 1rem;
+      border-top: 1px solid var(--border-color);
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 500px) {
+      .footer {
+          font-size: 0.8rem;
+          padding: 0.8rem;
+      }
+    }
+
+    /* Estilos para el modal */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        overflow: auto;
+        animation: fadeIn 0.3s;
+    }
+
+
+    @keyframes fadeIn {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+
+    .modal-content {
+        background-color: #ffb9d4;
+        margin: 3% auto; /* Reducido de 5% */
+        padding: 1.5rem; /* Reducido de 2rem */
+        border-radius: 0.5rem;
+        width: 95%; /* Aumentado de 90% */
+        max-width: 500px; /* Reducido de 700px */
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        position: relative;
+        overflow-y: auto;
+    }
+
+    .close-btn {
+        position: absolute;
+        right: 1.5rem;
+        top: 1rem;
+        color: var(--text-color);
+        font-size: 1.8rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: color 0.2s;
+    }
+
+    .close-btn:hover {
+        color: var(--text-title-color);
+    }
+
+    .modal-header {
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .modal-header h2 {
+      color: var(--text-title-color);
+    }
+
+    .modal-body {
+        display: flex;
+        flex-direction: column; /* Cambiado a columna para móviles */
+        gap: 1.5rem; /* Reducido de 2rem */
+    }
+
+    .modal-img-container {
+        width: 100%;
+        order: 1; /* La imagen va primero en móviles */
+    }
+
+    .modal-img {
+        width: 100%;
+        max-height: 250px; /* Reducido de 400px */
+        object-fit: cover;
+        border-radius: 0.5rem;
+    }
+
+    .modal-text {
+        width: 100%;
+        order: 2; /* El texto va después en móviles */
+        font-size: 0.9rem; /* Texto un poco más pequeño */
+    }
+
+    .modal-text h3 {
+        font-size: 1.3rem; /* Reducido de 1.5rem */
+    }
+
+    .modal-text ul {
+        padding-left: 1rem; /* Reducido de 1.2rem */
+        font-size: 0.85rem; /* Texto de lista más pequeño */
+    }
+
+    .modal-text p {
+        color: #000000;
+        line-height: 1.6;
+        margin-bottom: 1rem;
+    }
+
+    .modal-text p strong {
+      color: var(--text-title-color);
+    }
+
+    /* Para pantallas muy grandes */
+    @media (min-width: 1200px) {
+        .modal-content {
+            max-width: 900px; /* Aún más ancho para pantallas grandes */
+        }
+        
+        .modal-body {
+            gap: 2.5rem; /* Más espacio entre elementos */
+        }
+        
+        .modal-img-container {
+            min-width: 350px;
+        }
+        
+        .modal-text {
+            min-width: 350px;
+            font-size: 1.1rem; /* Texto un poco más grande */
+        }
+        
+        .modal-text h3 {
+            font-size: 1.7rem;
+        }
+    }
+
+    /* Estilos específicos para pantallas más grandes */
+    @media (min-width: 768px) {
+        .modal-content {
+            padding: 2rem;
+            width: 90%;
+            max-width: 800px; /* Cambiado de 600px a 800px para hacerlo más ancho */
+        }
+        
+        .modal-body {
+            flex-direction: row;
+            gap: 2rem; /* Aumentado el espacio entre imagen y texto */
+        }
+        
+        .modal-img-container {
+            flex: 1;
+            min-width: 300px; /* Aumentado de 250px */
+        }
+        
+        .modal-img {
+            max-height: 400px; /* Restaurado a 400px */
+        }
+        
+        .modal-text {
+            flex: 1;
+            min-width: 300px; /* Aumentado de 250px */
+            font-size: 1rem;
+        }
+        
+        .modal-text h3 {
+            font-size: 1.5rem;
+        }
+        
+        .modal-text ul {
+            font-size: 0.9rem;
+            padding-left: 1.2rem;
+        }
+    }
+
+    /* Estilos para el carrusel hero */
+    .hero-carousel {
+    position: relative;
+    width: 100%;
+    max-height: 80vh;
+    overflow: hidden;
+    margin-top: 4rem; /* Para que no se solape con el header fijo */
+    }
+
+    .carousel-slides {
+    display: flex;
+    transition: transform 0.5s ease;
+    width: 100%;
+    }
+
+    .slide {
+    min-width: 100%;
+    position: relative;
+    }
+
+    .slide img {
+    width: 100%;
+    height: auto;
+    max-height: 80vh;
+    object-fit: cover;
+    }
+
+    .slide-text {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 1.5rem;
+    text-align: center;
+    }
+
+    .slide-text h3 {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+    color: #fff;
+    }
+
+    .slide-text p {
+    font-size: 1.1rem;
+    margin-bottom: 0;
+    }
+
+    .carousel-prev, .carousel-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(230, 76, 142, 0.7);
+    color: white;
+    border: none;
+    padding: 1rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+    z-index: 10;
+    border-radius: 50%;
+    width: 3rem;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    }
+
+    .carousel-prev {
+    left: 1rem;
+    }
+
+    .carousel-next {
+    right: 1rem;
+    }
+
+    .carousel-dots {
+    position: absolute;
+    bottom: 1rem;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    z-index: 10;
+    }
+
+    .dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    }
+
+    .dot.active {
+    background: var(--text-title-color);
+    }
+
+    /* Ajustes para móviles */
+    @media (max-width: 768px) {
+    .hero-carousel {
+        margin-top: 3.5rem;
+    }
+    
+    .slide-text h3 {
+        font-size: 1.4rem;
+    }
+    
+    .slide-text p {
+        font-size: 0.9rem;
+    }
+    
+    .carousel-prev, .carousel-next {
+        padding: 0.7rem;
+        width: 2.5rem;
+        height: 2.5rem;
+        font-size: 1.2rem;
+    }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="left">
+      <div class="menu-container">
+        <div class="menu" id="menu">
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+      <div class="brand">
+        <img src="LOGO_SPA.jpg" alt="icon-udemy" class="logo" style="width: 52px; height: auto; border-radius: 5px;">
+        <span class="name">D Sara Spa</span>
+      </div>
+    </div>
+    <div class="right">
+    </div>
+  </header>
+
+  <div class="sidebar" id="sidebar">
+    <nav>
+        <ul>
+            <li><a href="#home"><i class="fas fa-home"></i><span>Inicio</span></a></li>
+            <li><a href="#catalogo"><i class="fas fa-th-list"></i><span>Catálogo</span></a></li>
+            <li><a href="#galeria"><i class="fas fa-images"></i><span>Galería</span></a></li>
+            <li><a href="#contacto"><i class="fas fa-phone-alt"></i><span>Contacto</span></a></li>
+        </ul>
+    </nav>
+  </div>
+
+  <main id="main-content">
+    <section id="home">
+        <!-- Carrusel de imágenes -->
+        <div class="hero-carousel">
+        <div class="carousel-slides">
+            <div class="slide">
+            <img src="BANERS/Asmodea.jpg" alt="Descripción imagen 1">
+            <div class="slide-text">
+                <h3>Masaje Sadico en Habitacion X</h3>
+                <p>Ven y vive la experiencia en Asmodea… ¿te atreves? Más información por Contactos.</p>
+            </div>
+            </div>
+            <div class="slide">
+            <img src="BANERS/RifasyExtras.jpg" alt="Descripción imagen 2">
+            <div class="slide-text">
+                <h3>Rifas Sexuales</h3>
+                <p>Gana encuentros íntimos exclusivos… ¿Serás el afortunado?.Más info por Contactos</p>
+            </div>
+            </div>
+        </div>
+        <button class="carousel-prev">❮</button>
+        <button class="carousel-next">❯</button>
+        <div class="carousel-dots">
+            <span class="dot active"></span>
+            <span class="dot"></span>
+        </div>
+        </div>
+    </section>
+    <section class="catalogo">
+        <h2 id="catalogo">Terapeutas</h2>
+      <div class="card">
+        <img src="IMAGENES/Emi.jpg" alt="Terapeuta EMY" class="card-img" />
+        <div class="card-info">
+          <h3>EMY</h3>
+          <p>Masajes, Depilación Genital</p>
+          <button class="info-btn">Más info</button>
+        </div>
+      </div>
+      <div class="card">
+        <img src="IMAGENES/Britani.jpg" alt="Terapeuta BRITANI" class="card-img" />
+        <div class="card-info">
+          <h3>BRITANI</h3>
+          <p>Masajes, Depilación Genital</p>
+          <button class="info-btn">Más info</button>
+        </div>
+      </div>
+      <div class="card">
+        <img src="IMAGENES/Lesli.jpg" alt="Terapeuta LESLY" class="card-img" />
+        <div class="card-info">
+          <h3>LESLY</h3>
+          <p>Masajes, Depilación Genital</p>
+          <button class="info-btn">Más info</button>
+        </div>
+      </div>
+      <div class="card">
+        <img src="IMAGENES/Natalia.jpg" alt="Terapeuta NATALIA" class="card-img" />
+        <div class="card-info">
+          <h3>NATALIA</h3>
+          <p>Masajes, Depilación Genital</p>
+          <button class="info-btn">Más info</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="galeria">
+      <h2 id="galeria">Galería</h2>
+      <div class="carousel-container">
+        <div class="carousel" id="carousel">
+          <div class="galeria-card"><img src="GALERIA/Emy.jpg" alt="Servicio 1" class="galeria-img"></div>
+          <div class="galeria-card"><img src="GALERIA/Emy4.jpg" alt="Servicio 2" class="galeria-img"></div>
+          <div class="galeria-card"><img src="GALERIA/Britani.jpg" alt="Servicio 3" class="galeria-img"></div>
+          <div class="galeria-card"><img src="GALERIA/Lesly.jpg" alt="Servicio 4" class="galeria-img"></div>
+          <div class="galeria-card"><img src="GALERIA/Lesly3.jpg" alt="Servicio 5" class="galeria-img"></div>
+          <div class="galeria-card"><img src="GALERIA/Lesly4.jpg" alt="Servicio 6" class="galeria-img"></div>
+          <div class="galeria-card"><img src="GALERIA/Natalia.jpg" alt="Servicio 7" class="galeria-img"></div>
+          <div class="galeria-card"><img src="GALERIA/Natalia2.jpg" alt="Servicio 8" class="galeria-img"></div>
+          <div class="galeria-card"><img src="GALERIA/Lesly2.jpg" alt="Servicio 9" class="galeria-img"></div>
+          <div class="galeria-card"><img src="GALERIA/Emy2.jpg" alt="Servicio 10" class="galeria-img"></div>
+          <div class="galeria-card"><img src="GALERIA/Emy3.jpg" alt="Servicio 11" class="galeria-img"></div>
+        </div>
+      </div>
+        <div class="carousel-controls">
+            <button class="prevBtn"><i class="fas fa-chevron-left"></i></button>
+            <button class="nextBtn"><i class="fas fa-chevron-right"></i></button>
+        </div>
+    </section>
+
+    <section class="galeria">
+        <h2 id="contacto">Contacto</h2>
+        <div class="qr-grid">
+            <div class="qr-item">
+            <h3>EMY</h3>
+            <div class="qr-container">
+                <a href="https://w.app/dneqwc" target="_blank">
+                <img src="QR/EmyQr.png" alt="Código QR EMY">
+                </a>
+            </div>
+            </div>
+            <div class="qr-item">
+            <h3>NATALIA</h3>
+            <div class="qr-container">
+                <a href="https://w.app/up7gv4" target="_blank">
+                <img src="QR/NataliaQr.png" alt="Código QR Natalia">
+                </a>
+            </div>
+            </div>
+            <div class="qr-item">
+            <h3>LESLY</h3>
+            <div class="qr-container">
+                <a href="https://w.app/0ngpn7" target="_blank">
+                <img src="QR/LeslyQr.png" alt="Código QR Lesly">
+                </a>
+            </div>
+            </div>
+            <div class="qr-item">
+            <h3>BRITANI</h3>
+            <div class="qr-container">
+                <a href="https://w.app/w9kaod" target="_blank">
+                <img src="QR/BritaniQr.png" alt="Código QR Britani">
+                </a>
+            </div>
+            </div>
+            <div class="qr-item">
+            <h3>ASMODEA</h3>
+            <div class="qr-container">
+                <a href="https://w.app/bjsp1o" target="_blank">
+                <img src="QR/AsmodeaQr.png" alt="Código QR Samodea">
+                </a>
+            </div>
+            </div>
+            <div class="qr-item">
+            <h3>GRUPO WA</h3>
+            <div class="qr-container">
+                <a href="https://chat.whatsapp.com/HSJBTYTZIVf2Uq3JoMRm04" target="_blank">
+                <img src="QR/RifasQr.png" alt="Código QR Grupo de Rifas">
+                </a>
+            </div>
+            </div>
+        </div>
+    </section>
+  </main>
+
+  <!-- Modal para más información -->
+  <div id="terapeutaModal" class="modal">
+      <div class="modal-content">
+          <span class="close-btn">&times;</span>
+          <div class="modal-header">
+              <h2 id="modalTitle">Información de la Terapeuta</h2>
+          </div>
+          <div class="modal-body">
+              <div class="modal-img-container">
+                  <img id="modalImage" src="" alt="Foto de la terapeuta" class="modal-img">
+              </div>
+              <div class="modal-text">
+                  <h3 id="modalName">Nombre</h3>
+                  <p id="modalDescription">Descripción profesional de la terapeuta.</p>
+                  <p id="modalServices"><strong>Servicios:</strong> Lista de servicios ofrecidos</p>
+                  <p id="modalLocation"><strong>Ubicación:</strong> Zona UTEQ</p>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <footer class="footer">
+        <p>&copy; 2025 D Sara Spa. Todos los derechos reservados.</p>
+  </footer>
+
+  <script>
+    // Menu toggle
+    const menuButton = document.getElementById('menu');
+    const sidebar = document.getElementById('sidebar');
+    const mainContent = document.getElementById('main-content');
+
+    menuButton.addEventListener('click', () => {
+        menuButton.classList.toggle('menu-toggle');
+        sidebar.classList.toggle('menu-toggle');
+        mainContent.classList.toggle('menu-toggle');
+    });
+
+    // Cerrar sidebar al hacer clic en enlaces
+    const sidebarLinks = sidebar.querySelectorAll('nav ul li a');
+    sidebarLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            menuButton.classList.remove('menu-toggle');
+            sidebar.classList.remove('menu-toggle');
+            mainContent.classList.remove('menu-toggle');
+        });
+    });
+
+    // Carrusel de galería
+    document.addEventListener("DOMContentLoaded", function () {
+      const carousel = document.querySelector(".carousel");
+      const cards = document.querySelectorAll(".galeria-card");
+      const prevBtn = document.querySelector(".prevBtn");
+      const nextBtn = document.querySelector(".nextBtn");
+
+      let currentIndex = 0;
+
+      function updateCarousel() {
+        const cardWidth = cards[0].offsetWidth + 20;
+        const visibleCards = Math.floor(document.querySelector(".carousel-container").offsetWidth / cardWidth);
+        const maxIndex = cards.length - visibleCards;
+
+        if (currentIndex > maxIndex) currentIndex = 0;
+        if (currentIndex < 0) currentIndex = maxIndex;
+
+        carousel.style.transform = `translateX(${-currentIndex * cardWidth}px)`;
+      }
+
+      nextBtn.addEventListener("click", () => {
+        currentIndex++;
+        updateCarousel();
+      });
+
+      prevBtn.addEventListener("click", () => {
+        currentIndex--;
+        updateCarousel();
+      });
+
+      window.addEventListener("resize", updateCarousel);
+      updateCarousel();
+    });
+
+    // Marcador de enlace activo
+    function marcarEnlaceActivo() {
+        const enlaces = document.querySelectorAll('.sidebar nav ul li a');
+        const hashActual = window.location.hash || '#home';
+    
+        enlaces.forEach(a => {
+          a.classList.toggle('selected', a.getAttribute('href') === hashActual);
+        });
+    }
+
+    window.addEventListener('load', marcarEnlaceActivo);
+    window.addEventListener('hashchange', marcarEnlaceActivo);
+
+    // Modal de terapeutas con información actualizada
+    document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('terapeutaModal');
+    const closeBtn = document.querySelector('.close-btn');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalImage = document.getElementById('modalImage');
+    const modalName = document.getElementById('modalName');
+    const modalDescription = document.getElementById('modalDescription');
+    const modalServices = document.getElementById('modalServices');
+    const modalLocation = document.getElementById('modalLocation');
+    
+    // Datos actualizados de las terapeutas
+    const terapeutasInfo = {
+        'EMY': {
+            title: 'Terapeuta Emi',
+            image: 'IMAGENES/Emi.jpg',
+            description: 'Lunes a Viernes 9 am a 7 pm<br>Sabados y domingos unicamente con cita 100% confirmada<br><br>Edad: 20, Estatura: 1.60, Tez: Bronceado, Cabello: Castaño Lacio, Complexion: Delgada.',
+            services: `
+                <strong>Servicios que realiza (Caballeros y Damas):</strong>
+                <ul style="margin-top: 0.5rem; padding-left: 1.2rem;">
+                    <li>1. Masaje Relajante de Cuerpo Completo Con Terminacion Manual ($1200)</li>
+                    <li>2. Encuentro: Relaciones ilimitadas 1 hora ($1500)</li>
+                    <li>3. Rapidin 1: 40 minutos de relación ($1000)</li>
+                    <li>4. Rapidin 2: 25 minutos de relación ($700)</li>
+                    <li>5. Rapidin 3: 20 minutos de relación ($600)</li>
+                    <li>6. (Todos los servicios son con Preservativo)</li>
+                    <li>7. Venta de contenido: Video HD + grupo privado ($500/$150 mes)</li>
+                </ul>
+            `,
+            location: 'Zona UTEQ'
+        },
+        'BRITANI': {
+            title: 'Terapeuta Britani',
+            image: 'IMAGENES/Britani.jpg',
+            description: 'Sabados y Domingos de 7 am a 12 pm<br><br>Edad: 23, Estatura: 1.68, Tez: Trigueña, Cabello: Castaño Lacio, Complexion: Media.',
+            services: `
+                <strong>Servicios que realiza (Caballeros):</strong>
+                <ul style="margin-top: 0.5rem; padding-left: 1.2rem;">
+                    <li>1. Masaje Relajante de Cuerpo Completo Con Terminacion Manual ($1200)</li>
+                    <li>2. Encuentro: Relaciones Vaginal y oral ilimitadas 1 hora ($1500)</li>
+                    <li>3. Rapidin 1: 40 minutos de relación ($1000)</li>
+                    <li>4. Rapidin 2: 25 minutos de relación ($700)</li>
+                    <li>5. Rapidin 3: 20 minutos de relación ($600)</li>
+                    <li>6. (Todos los servicios son con Preservativo)</li>
+                </ul>
+            `,
+            location: 'Zona UTEQ'
+        },
+        'NATALIA': {
+            title: 'Terapeuta Natalia',
+            image: 'IMAGENES/Natalia.jpg',
+            description: 'Lunes, Martes, Jueves y Viernes de 4 pm a 7 pm<br><br>Edad: 19, Estatura: 1.62, Tez: Blanca, Cabello: Negro Lacio, Complexion: Delgada.',
+            services: `
+                <strong>Servicios que realiza:</strong>
+                <ul style="margin-top: 0.5rem; padding-left: 1.2rem;">
+                    <li>1. Masaje Relajante de Cuerpo Completo Con Terminacion Manual ($1200)</li>
+                    <li>2. Depilacion Genital con terminacion Manual ($800)</li>
+                    <li>3. Venta de contenido: 5 Fotos + 1 Video explicito ($300) + grupo privado ($150 mes)</li>
+                    <li>4. (Todos los servicios son con Preservativo)</li>
+                </ul>
+                <p style="margin-top: 0.5rem;"><em>No coito ni relaciones sexuales, puedes tocar mis pechos</em></p>
+            `,
+            location: 'Zona UTEQ'
+        },
+        'LESLY': {
+            title: 'Terapeuta Lesly',
+            image: 'IMAGENES/Lesli.jpg',
+            description: 'Lunes a Viernes de 9 am a 7 pm<br><br>Edad: 25, Estatura: 1.60, Tez: Blanca, Cabello: Castaño Lacio, Complexion: Delgada.',
+            services: `
+                <strong>Servicios que realiza (Caballeros):</strong>
+                <ul style="margin-top: 0.5rem; padding-left: 1.2rem;">
+                    <li>1. Masaje Relajante de Cuerpo Completo Con Terminacion Manual ($1200)</li>
+                    <li>2. Depilacion Genital con terminacion Manual ($800)</li>
+                    <li>3. Encuentro: Relaciones Vaginal, oral y ANAL ilimitadas 1 hora ($1500)</li>
+                    <li>4. Rapidin 1: 40 minutos de relación ($1000)</li>
+                    <li>5. Rapidin 2: 25 minutos de relación ($700)</li>
+                    <li>6. Rapidin 3: 20 minutos de relación ($600)</li>
+                    <li>7. (Todos los servicios son con Preservativo)</li>
+                </ul>
+            `,
+            location: 'Zona UTEQ'
+        }
+    };
+    
+    // Abrir modal al hacer clic en Más info
+    document.querySelectorAll('.info-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const card = this.closest('.card');
+            const nombre = card.querySelector('h3').textContent;
+            
+            if (terapeutasInfo[nombre]) {
+                modalTitle.textContent = terapeutasInfo[nombre].title;
+                modalImage.src = terapeutasInfo[nombre].image;
+                modalName.textContent = nombre;
+                modalDescription.innerHTML = terapeutasInfo[nombre].description;
+                modalServices.innerHTML = terapeutasInfo[nombre].services;
+                modalLocation.innerHTML = `<strong>Ubicación:</strong> ${terapeutasInfo[nombre].location}`;
+                
+                modal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            }
+        });
+    });
+    
+    // Cerrar modal
+    closeBtn.addEventListener('click', function() {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    });
+    
+    window.addEventListener('click', function(event) {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+    });
+    });
+
+    // Carrusel Hero
+    document.addEventListener('DOMContentLoaded', function() {
+    const carousel = document.querySelector('.carousel-slides');
+    const slides = document.querySelectorAll('.slide');
+    const prevBtn = document.querySelector('.carousel-prev');
+    const nextBtn = document.querySelector('.carousel-next');
+    const dots = document.querySelectorAll('.dot');
+    
+    let currentIndex = 0;
+    const totalSlides = slides.length;
+    
+    function updateCarousel() {
+        carousel.style.transform = `translateX(-${currentIndex * 100}%)`;
+        
+        // Actualizar dots
+        dots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentIndex);
+        });
+    }
+    
+    function nextSlide() {
+        currentIndex = (currentIndex + 1) % totalSlides;
+        updateCarousel();
+    }
+    
+    function prevSlide() {
+        currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+        updateCarousel();
+    }
+    
+    // Event listeners
+    nextBtn.addEventListener('click', nextSlide);
+    prevBtn.addEventListener('click', prevSlide);
+    
+    // Dots navigation
+    dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+        currentIndex = index;
+        updateCarousel();
+        });
+    });
+    
+    // Auto-advance (opcional)
+    let interval = setInterval(nextSlide, 5000);
+    
+    // Pausar al interactuar
+    carousel.addEventListener('mouseenter', () => clearInterval(interval));
+    carousel.addEventListener('mouseleave', () => interval = setInterval(nextSlide, 5000));
+    });
+  </script>
+</body>
+</html>
